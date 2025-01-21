@@ -1,0 +1,56 @@
+import pygame
+import numpy as np
+
+# Initialize pygame
+pygame.init()
+
+# Screen settings
+WIDTH, HEIGHT = 800, 600
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Voxel Game")
+
+# Colors
+SKY_COLOR = (135, 206, 235)
+GROUND_COLOR = (34, 139, 34)
+BLOCK_COLOR = (139, 69, 19)
+
+# Block settings
+BLOCK_SIZE = 50
+GRID_SIZE = 10
+
+# Camera position
+camera_x, camera_y = 0, 0
+
+# Create a simple block world
+world = np.random.choice([0, 1], size=(GRID_SIZE, GRID_SIZE))
+
+def draw_world():
+    """Draws the voxel world on the screen."""
+    for y in range(GRID_SIZE):
+        for x in range(GRID_SIZE):
+            if world[y][x] == 1:  # Draw block if present
+                block_x = x * BLOCK_SIZE - camera_x
+                block_y = y * BLOCK_SIZE - camera_y
+                pygame.draw.rect(screen, BLOCK_COLOR, (block_x, block_y, BLOCK_SIZE, BLOCK_SIZE))
+
+def main():
+    global camera_x, camera_y
+
+    clock = pygame.time.Clock()
+    running = True
+
+    while running:
+        screen.fill(SKY_COLOR)
+
+        # Event handling
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        # Controls
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_w]:  # Move up
+            camera_y -= 5
+        if keys[pygame.K_s]:  # Move down
+            camera_y += 5
+        if keys[pygam
